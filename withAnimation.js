@@ -15,6 +15,8 @@ export default function withAnimation(WrappedComponent, indeterminateProgress) {
       indeterminate: PropTypes.bool,
       indeterminateAnimationDuration: PropTypes.number,
       progress: PropTypes.number,
+      animationSpeed: PropTypes.number,
+      animationBounciness: PropTypes.number,
     };
 
     static defaultProps = {
@@ -22,6 +24,8 @@ export default function withAnimation(WrappedComponent, indeterminateProgress) {
       indeterminateAnimationDuration: 1000,
       indeterminate: false,
       progress: 0,
+      animationSpeed: 12,
+      animationBounciness: 8,
     };
 
     constructor(props) {
@@ -59,6 +63,8 @@ export default function withAnimation(WrappedComponent, indeterminateProgress) {
           this.spin();
         } else {
           Animated.spring(this.state.rotation, {
+            speed: this.props.animationSpeed,
+            bounciness: this.props.animationBounciness,
             toValue: this.rotationValue > 0.5 ? 1 : 0,
             useNativeDriver: false
           }).start(endState => {
@@ -74,8 +80,9 @@ export default function withAnimation(WrappedComponent, indeterminateProgress) {
       if (progress !== this.progressValue) {
         if (this.props.animated) {
           Animated.spring(this.state.progress, {
+            speed: this.props.animationSpeed,
+            bounciness: this.props.animationBounciness,
             toValue: progress,
-            bounciness: 0,
             useNativeDriver: false
           }).start();
         } else {
